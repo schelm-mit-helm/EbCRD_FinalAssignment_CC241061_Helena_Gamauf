@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "name": "Menu",
+    "maps": [
+        {
+            "name": "PauseMenu",
+            "id": "4582d781-e0c4-40c3-88c6-da623a3f1ab6",
+            "actions": [
+                {
+                    "name": "OpenUp",
+                    "type": "Button",
+                    "id": "552665b6-e429-41c0-966f-a6f7f9e1e9a6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "abe5a3a0-3bf6-4b2a-ad7d-c402c37c0df0",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3724c8d8-dff6-44a0-9904-c127020db9cb",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e67166b4-14ec-4f73-ab64-b380adeeda06",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
