@@ -4,9 +4,9 @@
   <GenerateSoundBanksAsPreBuildStep>false</GenerateSoundBanksAsPreBuildStep>
   <WwiseStreamingAssetsPath>Audio\GeneratedSoundBanks</WwiseStreamingAssetsPath>
   <RootOutputPath>../FinalAssignment_CC241061_Helena_Gamauf_WwiseProject/GeneratedSoundBanks/</RootOutputPath>
-  <CreatedPicker>false</CreatedPicker>
-  <CreateWwiseGlobal>true</CreateWwiseGlobal>
-  <CreateWwiseListener>true</CreateWwiseListener>
+  <CreatedPicker>true</CreatedPicker>
+  <CreateWwiseGlobal>false</CreateWwiseGlobal>
+  <CreateWwiseListener>false</CreateWwiseListener>
   <ObjectReferenceAutoCleanup>true</ObjectReferenceAutoCleanup>
   <LoadSoundEngineInEditMode>true</LoadSoundEngineInEditMode>
   <ShowMissingRigidBodyWarning>true</ShowMissingRigidBodyWarning>

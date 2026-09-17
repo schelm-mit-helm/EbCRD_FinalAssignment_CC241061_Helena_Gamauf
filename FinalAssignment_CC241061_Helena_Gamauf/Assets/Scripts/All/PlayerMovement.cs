@@ -22,8 +22,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float mouseSpeed = 1f;
     [SerializeField] private float gamepadCameraSpeedMultiplier = 7f;
     [SerializeField] private float interactRayDistance = 5f;
-    [SerializeField] private string interactiveTag = "interactive";
-    [SerializeField] private string droppedItemTag = "DroppedItem";
+    //[SerializeField] private string interactiveTag = "interactive";
+    //[SerializeField] private string droppedItemTag = "DroppedItem";
     [SerializeField] private InteractionPromptUI interactionPrompt;
     [SerializeField] private string droppedItemPromptMessage = "Press E to pick up";
     [SerializeField] private string droppedItemGamepadPromptMessage = "Press X to pick up";
@@ -397,7 +397,7 @@ public class PlayerMovement : MonoBehaviour
         //Footstep sound logic
         if (inputDirection != Vector3.zero)
         {
-            Debug.Log("We are walking");
+            //Debug.Log("We are walking");
             footstepTimer -= Time.deltaTime;
             if (footstepTimer <= 0f)
             {
@@ -408,7 +408,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Debug.Log("We are not walking");
+            //Debug.Log("We are not walking");
         }
 
         InputDeviceTracker.UpdateFromInput();
@@ -649,7 +649,7 @@ public class PlayerMovement : MonoBehaviour
         if (inventory == null)
             return;
 
-        var droppedItem = GetLookedAtDroppedItem();
+        /*var droppedItem = GetLookedAtDroppedItem();
         if (droppedItem != null)
         {
             inventory.PickupDroppedItem(droppedItem);
@@ -658,7 +658,7 @@ public class PlayerMovement : MonoBehaviour
 
         var itemPickup = GetLookedAtItemPickup();
         if (itemPickup != null)
-            itemPickup.TryPickup(inventory);
+            itemPickup.TryPickup(inventory);*/
     }
 
     void UpdateInteractionPrompt()
@@ -686,7 +686,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        var droppedItem = GetLookedAtDroppedItem();
+        /*var droppedItem = GetLookedAtDroppedItem();
         if (droppedItem != null && droppedItem.CanBePickedUp)
         {
             interactionPrompt.Show(useGamepad ? droppedItemGamepadPromptMessage : droppedItemPromptMessage);
@@ -698,7 +698,7 @@ public class PlayerMovement : MonoBehaviour
         {
             interactionPrompt.Show(itemPickup.GetPromptMessage(useGamepad));
             return;
-        }
+        }*/
 
         interactionPrompt.Hide();
     }
@@ -733,7 +733,7 @@ public class PlayerMovement : MonoBehaviour
         return hits;
     }
 
-    DroppedItem GetLookedAtDroppedItem()
+    /*DroppedItem GetLookedAtDroppedItem()
     {
         foreach (var hit in GetSortedInteractionHits())
         {
@@ -765,7 +765,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         return null;
-    }
+    }*/
     
     //private void HandleFootsteps()
     //{
