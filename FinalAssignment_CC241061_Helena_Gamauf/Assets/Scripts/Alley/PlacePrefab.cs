@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//TEST
 public class PlacePrefab : MonoBehaviour
 {
     [SerializeField] private GameObject objectPrefab;

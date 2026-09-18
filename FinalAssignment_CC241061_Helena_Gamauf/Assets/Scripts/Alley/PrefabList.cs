@@ -1,15 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PrefabList : MonoBehaviour
 {
-    [SerializeField] private GameObject[] prefabs;
-    [SerializeField] private Transform[] locations;
+    [SerializeField] private List<GameObject> prefabs;
+    [SerializeField] private List<Transform> locations;
     
-    
-    private int _locationCount;
+    private List<GameObject> spawnedPrefabs = new List<GameObject>();
     void Start()
     {
-        _locationCount = locations.Length;
         SpawnRandomPrefabs();
     }
 
@@ -21,31 +20,46 @@ public class PrefabList : MonoBehaviour
     public GameObject[] SpawnRandomPrefabs()
     {
         GameObject[] chosenPrefabs = GetRandomPrefabs();
-        GameObject[] spawnedPrefabs = new GameObject[locations.Length];
+        spawnedPrefabs.Clear();
 
-        for (int i = 0; i < locations.Length; i++)
+        for (int i = 0; i < locations.Count; i++)   
         {
-            spawnedPrefabs[i] = SpawnPrefab(
+            spawnedPrefabs.Add(SpawnPrefab(
                 chosenPrefabs[i],
                 locations[i]
-            );
+            ));
         }
 
-        return spawnedPrefabs;
+        return spawnedPrefabs.ToArray();
     } 
     public GameObject[] GetRandomPrefabs()
     {
-        GameObject[] chosenPrefabs = new GameObject[locations.Length];
+        GameObject[] randomPrefabs = new GameObject[locations.Count];
         
-        for (int i = 0; i < locations.Length; i++)
+        for (int i = 0; i < locations.Count; i++)
         {
+            List<GameObject> filteredPrefabs = new List<GameObject>();
+            
+            foreach (GameObject prefab in prefabs)
+            {
+                if (prefab.CompareTag(locations[i].tag))
+                {
+                    filteredPrefabs.Add(prefab);
+                }
+            }
 
-            //locations[i].tag = ;
-            int randomIndex = Random.Range(0, prefabs.Length);
-            chosenPrefabs[i] = prefabs[randomIndex];
-            if(chosenPrefabs[i].tag == locations[i].tag){}
+            if (filteredPrefabs.Count > 0)
+            {
+                int randomIndex = Random.Range(0, filteredPrefabs.Count);
+                randomPrefabs[i] = filteredPrefabs[randomIndex];
+            }
+            else
+            {
+                Debug.LogError("No Prefab Found for location: " + locations[i].name 
+                                + " with tag: " + locations[i].tag);
+            }
         }
-        return chosenPrefabs;
+        return randomPrefabs;
     }
     
     public GameObject SpawnPrefab(GameObject prefab, Transform location)
