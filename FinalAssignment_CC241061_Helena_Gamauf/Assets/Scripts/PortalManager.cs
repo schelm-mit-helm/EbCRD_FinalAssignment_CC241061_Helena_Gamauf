@@ -20,6 +20,14 @@ public class PortalManager : MonoBehaviour
                     spawnPoint.transform.position.x + (other.transform.position.x - transform.position.x), 
                     other.transform.position.y, 
                     spawnPoint.transform.position.z + (other.transform.position.z - transform.position.z));
+                //-------------Change--------
+                LevelService.Instance.AddLevel();
+                
+                
+                
+                
+                
+                
                 //Debug.Log("Portal teleported to " + other.transform.position.x + " and " + other.transform.position.z + "");
                 //Debug.Log("Portal teleporting! from " + this.name + " to " + spawnPoint.name + "");
                 
