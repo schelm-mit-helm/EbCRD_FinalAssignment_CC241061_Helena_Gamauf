@@ -67,6 +67,7 @@ public class MazeRenderer : MonoBehaviour
     private MazeCell[,] maze;
     private readonly HashSet<Vector2Int> usedSpawnCells = new HashSet<Vector2Int>();
 
+    //🏢
     struct ItemSpawnPlan
     {
         public GameObject prefab;
