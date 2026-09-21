@@ -7,17 +7,22 @@ public class Anomaly : MonoBehaviour
 {
     public static Anomaly Instance { get; private set; } //TODO Temporary
     
-    private bool _anomalyHappening = false;
-    //private bool _anomalyDeterminded = false;
-    private int _anomalyVersion;
+    private bool _anomalyHappening;
     private int _anomalyCount = 0;
-    private int[] _anomalyTypePerCount;
-    public int AnomalyCount => _anomalyCount; 
+    private int[] _anomalyTypePerCount = Array.Empty<int>();
     
-    //public bool AnomalyDeterminded => _anomalyDeterminded;
-    public int AnomalyVersion => _anomalyVersion;
+    
+    public bool AnomalyHappening => _anomalyHappening;
+    public int AnomalyCount => _anomalyCount; 
     public int[] AnomalyTypePerCount => _anomalyTypePerCount;
     
+    public event Action AnomalyDetermined;
+
+    private void Awake()
+    { 
+        Instance = this;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player"))
@@ -28,14 +33,14 @@ public class Anomaly : MonoBehaviour
         if (_anomalyHappening)
         {
             Debug.Log("Anomaly happening");
-            _anomalyVersion++;
+            
             DetermineAnomaly();
         }
         else
         {
             ResetAnomaly();
         }
-        
+        AnomalyDetermined?.Invoke();
     }
     
     public void DetermineAnomaly()

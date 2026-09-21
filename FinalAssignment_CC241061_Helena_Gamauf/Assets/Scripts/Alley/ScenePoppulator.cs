@@ -5,110 +5,250 @@ public class ScenePoppulator : MonoBehaviour
 {
     [SerializeField] private List<GameObject> prefabs;
     [SerializeField] private List<Transform> locations;
+
+    // The prefab originally assigned to each location.
+    private readonly List<GameObject> _initialPrefabs = new();
+
+    // The prefab currently being used at each location.
+    private readonly List<GameObject> _currentPrefabs = new();
+
+    // The actual instantiated GameObject currently at each location.
+    private readonly List<GameObject> _currentObjectsInScene = new();
+
+    // Locations that can still receive an anomaly during this anomaly event.
+    private readonly List<int> _availableIndices = new();
     
-    private bool _isAnomalyInstantiated = false;
-    private int _lastInstantiatedAnomaly = 0;
-    private List<GameObject> _initialObjectsInScene = new List<GameObject>();
-    private List<GameObject> _currentObjectsInScene = new List<GameObject>();
-    private List<int> _availableIndices = new List<int>();
-    void Start()
+    // Locations that received an anomaly during the PREVIOUS cycle.
+    private readonly HashSet<int> _previousAnomalyIndices = new();
+
+    private void OnEnable()
+    {
+        if (Anomaly.Instance != null)
+        {
+            Anomaly.Instance.AnomalyDetermined += HandleAnomalyDetermined;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (Anomaly.Instance != null)
+        {
+            Anomaly.Instance.AnomalyDetermined -= HandleAnomalyDetermined;
+        }
+    }
+
+    private void Start()
     {
         SpawnInitialPrefabs();
-        
     }
-    void Update()
+
+    private void HandleAnomalyDetermined()
     {
-        if (Anomaly.Instance.AnomalyVersion != _lastInstantiatedAnomaly)
+        Debug.Log("New anomaly state received!");
+
+        // Always restore the scene to its original state first.
+        ResetScene();
+
+        if (Anomaly.Instance.AnomalyHappening)
         {
-            //_isAnomalyInstantiated = true;
-            Debug.Log("In ScenePopulator: Anomaly happening was detected");
-            
-            _currentObjectsInScene.Clear();
-            _currentObjectsInScene = new List<GameObject>(_initialObjectsInScene);
-            
-            _availableIndices.Clear();
-            for (int i = 0; i < _currentObjectsInScene.Count; i++)
+            Debug.Log("About to get anomaly game objects!");
+            GetAnomalyGameObjects();
+        }
+    }
+
+    private void SpawnInitialPrefabs()
+    {
+        _initialPrefabs.Clear();
+        _currentPrefabs.Clear();
+        _currentObjectsInScene.Clear();
+        _availableIndices.Clear();
+
+        foreach (Transform location in locations)
+        {
+            GameObject randomPrefab = GetRandomPrefab(location);
+
+            if (randomPrefab == null)
+            {
+                Debug.LogError(
+                    $"Could not spawn initial prefab at location {location.name}."
+                );
+
+                _initialPrefabs.Add(null);
+                _currentPrefabs.Add(null);
+                _currentObjectsInScene.Add(null);
+
+                continue;
+            }
+
+            GameObject spawnedObject = SpawnPrefab(
+                randomPrefab,
+                location
+            );
+
+            // Store BOTH the prefab and the actual spawned object.
+            _initialPrefabs.Add(randomPrefab);
+            _currentPrefabs.Add(randomPrefab);
+            _currentObjectsInScene.Add(spawnedObject);
+        }
+
+        // Every location is initially available for an anomaly.
+        for (int i = 0; i < _currentObjectsInScene.Count; i++)
+        {
+            if (_currentObjectsInScene[i] != null)
             {
                 _availableIndices.Add(i);
             }
-            
-            GetAnomalyGameObjects();
-            _lastInstantiatedAnomaly = Anomaly.Instance.AnomalyVersion;
-        } 
-        
-    }
-    
-    private GameObject[] SpawnInitialPrefabs()
-    {
-        GameObject[] chosenPrefabs = GetRandomPrefabs();
-        _initialObjectsInScene.Clear();
-
-        for (int i = 0; i < locations.Count; i++)   
-        {
-            _initialObjectsInScene.Add(SpawnPrefab(
-                chosenPrefabs[i],
-                locations[i]
-            ));
         }
-        
-        return _initialObjectsInScene.ToArray();
     }
 
-    private List<GameObject> GetAnomalyGameObjects()
-    {
-        for (int i = 0; i < Anomaly.Instance.AnomalyTypePerCount.Length; i++)
+    private void GetAnomalyGameObjects()
+    {   
+        _availableIndices.Clear();
+
+        for (int i = 0; i < _currentObjectsInScene.Count; i++)
         {
-            int randomListPosition = Random.Range(0, _availableIndices.Count);
-            int objectIndex = _availableIndices[randomListPosition];
-
-            _availableIndices.RemoveAt(randomListPosition);
-            
-            switch (Anomaly.Instance.AnomalyTypePerCount[i])
+            if (_currentObjectsInScene[i] != null &&
+                !_previousAnomalyIndices.Contains(i))
             {
-                case 0:
-                    GameObject oldObject = _currentObjectsInScene[objectIndex];
+                _availableIndices.Add(i);
+            }
+        }
 
-                    GameObject newObject = SpawnPrefab(
-                        GetRandomPrefab(locations[objectIndex]),
-                        locations[objectIndex]
-                    );
-
-                    Destroy(oldObject);
-
-                    _currentObjectsInScene[objectIndex] = newObject;
-                    break;
-
-                case 1:
-                    // Anomaly Type 2: Deactivate object
-                    _currentObjectsInScene[objectIndex].SetActive(false);
-                    break;
-                default:
-                    Debug.Log("No anomaly occurred.");
-                    break;
+        // Keep track of THIS cycle separately.
+        HashSet<int> currentAnomalyIndices = new();
+        
+        foreach (int anomalyType in Anomaly.Instance.AnomalyTypePerCount)
+        {
+         
+            if (_availableIndices.Count == 0)
+            {
+                Debug.LogWarning("No more available locations for anomalies.");
+                break;
             }
 
+            int randomListPosition = Random.Range(
+                0,
+                _availableIndices.Count
+            );
+
+            int objectIndex = _availableIndices[randomListPosition];
+            currentAnomalyIndices.Add(objectIndex);
+
+            
+            _availableIndices.RemoveAt(randomListPosition);
+
+            switch (anomalyType)
+            {
+                case 0:
+                {
+                    // Anomaly Type 1: Replace object.
+                    
+                    ReplaceObject(objectIndex);
+                    break;
+                }
+
+                case 1:
+                {
+                    // Anomaly Type 2: Deactivate object.
+                    DeactivateObject(objectIndex);
+
+                    break;
+                }
+
+                default:
+                    Debug.LogWarning(
+                        $"Unknown anomaly type: {anomalyType}"
+                    );
+                    break;
+            }
         }
-        return _currentObjectsInScene;
-    }
-    public GameObject[] GetRandomPrefabs()
-    {
-        GameObject[] randomPrefabs = new GameObject[locations.Count];
-        
-        for (int i = 0; i < locations.Count; i++)
+        _previousAnomalyIndices.Clear();
+
+        foreach (int index in currentAnomalyIndices)
         {
-            GameObject randomPrefab = GetRandomPrefab(locations[i]);
-            randomPrefabs[i] = randomPrefab;
+            _previousAnomalyIndices.Add(index);
         }
-        return randomPrefabs;
     }
-    
-    public GameObject GetRandomPrefab(Transform location)
+
+    private void ReplaceObject(int objectIndex)
     {
-        List<GameObject> filteredPrefabs = new List<GameObject>();
+        GameObject oldObject = _currentObjectsInScene[objectIndex];
+        GameObject oldPrefab = _currentPrefabs[objectIndex];
+
+        GameObject newPrefab = GetRandomPrefab(
+            locations[objectIndex],
+            oldPrefab
+        );
+
+        if (newPrefab == null)
+        {
+            Debug.LogWarning(
+                $"Could not replace object at index {objectIndex}. " +
+                "There is no alternative prefab. Object will be deactivated."
+            );
+
+            if (oldObject != null)
+            {
+                oldObject.SetActive(false);
+            }
+
+            return;
+        }
+
+        // IMPORTANT:
+        // Spawn the exact prefab we selected above.
+        GameObject newObject = SpawnPrefab(
+            newPrefab,
+            locations[objectIndex]
+        );
+
+        // Destroy the old object.
+        if (oldObject != null)
+        {
+            Destroy(oldObject);
+        }
+
+        // Update both lists to point at the replacement.
+        _currentObjectsInScene[objectIndex] = newObject;
+        _currentPrefabs[objectIndex] = newPrefab;
+
+        Debug.Log(
+            $"Anomaly Type 1: Replaced object at index {objectIndex}. " +
+            $"Old: {oldPrefab.name}, New: {newPrefab.name}"
+        );
+    }
+
+    private void DeactivateObject(int objectIndex)
+    {
+        GameObject objectToDeactivate =
+            _currentObjectsInScene[objectIndex];
+
+        if (objectToDeactivate != null)
+        {
+            objectToDeactivate.SetActive(false);
+
+            Debug.Log(
+                $"Anomaly Type 2: Deactivated object at index " +
+                $"{objectIndex}. Object: {objectToDeactivate.name}"
+            );
+        }
+    }
+
+    private GameObject GetRandomPrefab(
+        Transform location,
+        GameObject prefabToExclude = null)
+    {
+        List<GameObject> filteredPrefabs = new();
 
         foreach (GameObject prefab in prefabs)
         {
-            if (prefab.CompareTag(location.tag))
+            if (prefab == null)
+            {
+                continue;
+            }
+
+            if (prefab.CompareTag(location.tag) &&
+                prefab != prefabToExclude)
             {
                 filteredPrefabs.Add(prefab);
             }
@@ -116,23 +256,74 @@ public class ScenePoppulator : MonoBehaviour
 
         if (filteredPrefabs.Count > 0)
         {
-            int randomIndex = Random.Range(0, filteredPrefabs.Count);
+            int randomIndex = Random.Range(
+                0,
+                filteredPrefabs.Count
+            );
+
             return filteredPrefabs[randomIndex];
         }
 
-        Debug.LogError("No Prefab Found for location: " + location.name
-                                                        + " with tag: " + location.tag);
+        Debug.LogWarning(
+            $"No alternative prefab found for location: " +
+            $"{location.name} with tag: {location.tag}"
+        );
 
         return null;
     }
-    
-    public GameObject SpawnPrefab(GameObject prefab, Transform location)
+
+    private GameObject SpawnPrefab(
+        GameObject prefab,
+        Transform location)
     {
+        if (prefab == null)
+        {
+            return null;
+        }
+
         return Instantiate(prefab, location);
-    } 
-      
-    public void ResetScene()
+    }
+
+    private void ResetScene()
     {
-     
+        // Destroy every currently spawned object.
+        foreach (GameObject obj in _currentObjectsInScene)
+        {
+            if (obj != null)
+            {
+                Destroy(obj);
+            }
+        }
+
+        _currentObjectsInScene.Clear();
+        _currentPrefabs.Clear();
+        _availableIndices.Clear();
+
+        // Spawn exactly one original object at each location.
+        for (int i = 0; i < _initialPrefabs.Count; i++)
+        {
+            GameObject initialPrefab = _initialPrefabs[i];
+
+            if (initialPrefab == null)
+            {
+                _currentObjectsInScene.Add(null);
+                _currentPrefabs.Add(null);
+                continue;
+            }
+
+            GameObject newObject = SpawnPrefab(
+                initialPrefab,
+                locations[i]
+            );
+
+            _currentObjectsInScene.Add(newObject);
+            _currentPrefabs.Add(initialPrefab);
+
+            // Make sure the reset object is active.
+            newObject.SetActive(true);
+
+            _availableIndices.Add(i);
+        }
     }
 }
+
