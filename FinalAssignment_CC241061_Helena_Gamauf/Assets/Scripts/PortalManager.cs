@@ -16,12 +16,18 @@ public class PortalManager : MonoBehaviour
             //{
                 //Debug.Log("Portal teleporting! from " + other.transform.position.z + " to " + spawnPoint.transform.position.z + "");
                 //Debug.Log("Portal teleporting! from " + other.transform.position.x + " to " + spawnPoint.transform.position.x + "");
+                LevelService.EnsurePersistentInstance();
+                Anomaly.EnsurePersistentInstance();
+                if (LevelService.Instance.Level > 0)
+                {
+                    Anomaly.Instance.CheckAnomaly(other.tag);
+                }
                 other.transform.position = new Vector3(
                     spawnPoint.transform.position.x + (other.transform.position.x - transform.position.x), 
                     other.transform.position.y, 
                     spawnPoint.transform.position.z + (other.transform.position.z - transform.position.z));
                 //-------------Change--------
-                LevelService.Instance.AddLevel();
+                
                 
                 
                 
