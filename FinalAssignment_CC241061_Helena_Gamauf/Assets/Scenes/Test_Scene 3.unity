@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 6034051}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: -33.3, y: 5.1099997, z: 15.404992}
+  m_LocalPosition: {x: -33.933, y: 5.1099997, z: 15.404992}
   m_LocalScale: {x: 2.8384998, y: 8.822342, z: 20.314032}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -334,7 +334,7 @@ Transform:
   m_GameObject: {fileID: 68560973}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: -6.6, y: 5.1099997, z: 16.96}
+  m_LocalPosition: {x: -7, y: 5.1099997, z: 16.96}
   m_LocalScale: {x: 2.8384998, y: 8.822342, z: 20.314032}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1135,19 +1135,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrefabList
   prefabs:
-  - {fileID: 1999239547283070, guid: d027d4bce170c4abf8619a7d7980440e, type: 3}
-  - {fileID: 1280056767771472, guid: e53cd9b7f6ac44f3ebe9af3f0f302b4f, type: 3}
-  - {fileID: 100004, guid: 080a1d3ba1e9f4afb9b918750cfa323f, type: 3}
-  - {fileID: 1305883699301654, guid: 093a44e6b1a384df88fabf2976ac0055, type: 3}
-  - {fileID: 1891390126468666, guid: d4368066c6a114efe9bcb98e6cb1486d, type: 3}
-  - {fileID: 4516374085286293296, guid: 7d0c4ae3df328bf458023cbb7ee2f856, type: 3}
-  - {fileID: 4516374085286293296, guid: 7d0c4ae3df328bf458023cbb7ee2f856, type: 3}
-  - {fileID: 4516374085286293296, guid: 7d0c4ae3df328bf458023cbb7ee2f856, type: 3}
-  - {fileID: 4516374085286293296, guid: 7d0c4ae3df328bf458023cbb7ee2f856, type: 3}
-  - {fileID: 4516374085286293296, guid: 7d0c4ae3df328bf458023cbb7ee2f856, type: 3}
-  - {fileID: 4516374085286293296, guid: 7d0c4ae3df328bf458023cbb7ee2f856, type: 3}
-  - {fileID: 4516374085286293296, guid: 7d0c4ae3df328bf458023cbb7ee2f856, type: 3}
-  - {fileID: 4516374085286293296, guid: 7d0c4ae3df328bf458023cbb7ee2f856, type: 3}
+  - {fileID: 5481258889841762818, guid: 6b2cc7dc24a52dd43baa1b1b76297bc7, type: 3}
+  - {fileID: 6928704841599534124, guid: 76a19ecb1438dc44ea2a6dfe63fb36d3, type: 3}
+  - {fileID: 6497677867069276644, guid: 51dea8613bf2a474985ab26afe0276e4, type: 3}
   - {fileID: 4516374085286293296, guid: 7d0c4ae3df328bf458023cbb7ee2f856, type: 3}
   locations:
   - {fileID: 801359031}
@@ -2302,10 +2292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8632657221893d14685cd5d0bbd72d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: AK.Wwise.Unity.MonoBehaviour::AkAudioListener
-  isDefaultListener: 1
-  bOverrideScalingFactor: 0
-  scalingFactor: -1
-  listenerId: 0
 --- !u!114 &687010310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2318,18 +2304,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d43b1ed5a5ef7f24393319c7fac47a3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: AK.Wwise.Unity.MonoBehaviour::AkGameObj
-  m_listeners:
-    initialListenerList: []
-    useDefaultListeners: 1
-  isEnvironmentAware: 1
-  isStaticObject: 0
-  usePositionOffsetData: 0
-  m_positionOffsetData:
-    KeepMe: 0
-    positionOffset: {x: 0, y: 0, z: 0}
-  scalingFactor: 1
-  m_posOffsetData: {fileID: 0}
-  listenerMask: 1
 --- !u!114 &687010311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3891,6 +3865,82 @@ MonoBehaviour:
   gameSceneName: Bakery_Scene
   startsOpen: 0
   canClose: 1
+--- !u!1 &1127228411
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1127228415}
+  - component: {fileID: 1127228414}
+  - component: {fileID: 1127228413}
+  - component: {fileID: 1127228412}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1127228412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127228411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef512482b2994ce48b9b14c4160901d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnomalyDifficultyService
+  startingAnomalyCount: 3
+  minAnomalyCount: 1
+  anomalyCountDecreasePerLevel: 1
+  levelsPerAnomalyCountStep: 3
+  levelsToReachMaxBias: 20
+  minTypeExponent: 0.35
+--- !u!114 &1127228413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127228411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82729fd1d6c938a41a0bf51e41b7e9d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelService
+--- !u!114 &1127228414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127228411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f41d93e22cb3a924787c49ca1f24117d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Anomaly
+--- !u!4 &1127228415
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127228411}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 23.89639, y: 4.76201, z: -7.85925}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1196533689
 GameObject:
   m_ObjectHideFlags: 0
@@ -7838,3 +7888,4 @@ SceneRoots:
   - {fileID: 1615249618}
   - {fileID: 783966036}
   - {fileID: 389659275}
+  - {fileID: 1127228415}
