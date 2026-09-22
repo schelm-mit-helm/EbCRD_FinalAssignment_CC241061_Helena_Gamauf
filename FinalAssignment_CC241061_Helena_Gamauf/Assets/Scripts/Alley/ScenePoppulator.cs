@@ -25,7 +25,7 @@ public class ScenePoppulator : MonoBehaviour
     {
         if (Anomaly.Instance != null)
         {
-            Anomaly.Instance.AnomalyDetermined += HandleAnomalyDetermined;
+            Anomaly.EnsurePersistentInstance().AnomalyDetermined += HandleAnomalyDetermined;
         }
     }
 
@@ -33,7 +33,7 @@ public class ScenePoppulator : MonoBehaviour
     {
         if (Anomaly.Instance != null)
         {
-            Anomaly.Instance.AnomalyDetermined -= HandleAnomalyDetermined;
+            Anomaly.EnsurePersistentInstance().AnomalyDetermined -= HandleAnomalyDetermined;
         }
     }
 

@@ -12,6 +12,11 @@ public class LevelService : MonoBehaviour
 
     public static LevelService EnsurePersistentInstance()
     {
+        // LevelService depends on AnomalyDifficultyService internally -
+        // make sure it exists here so callers of LevelService don't also
+        // need to remember to bootstrap it separately.
+        AnomalyDifficultyService.EnsurePersistentInstance();
+
         if (Instance != null)
             return Instance;
 
@@ -60,12 +65,14 @@ public class LevelService : MonoBehaviour
     {
         SetLevel(level + 1);
         CheckWin();
+        Debug.Log($"Level {level} has been added");
         AnomalyDifficultyService.Instance.AdvanceLevel();
     }
 
     public void DeductLevels()
     {
         SetLevel(Mathf.Max(0, level - 3));
+        Debug.Log($"Level {level} has been deducted");
         AnomalyDifficultyService.Instance.DecreaseLevel();
         CheckWin();
     }

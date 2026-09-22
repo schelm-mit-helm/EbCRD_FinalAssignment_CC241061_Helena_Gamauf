@@ -22,6 +22,7 @@ public class LoopCheckpoint : MonoBehaviour
         }
         LevelService.EnsurePersistentInstance();
         Anomaly.EnsurePersistentInstance();
+        AnomalyDifficultyService.EnsurePersistentInstance();
         
         if (pair.pendingEntry == null)
         {
@@ -29,10 +30,18 @@ public class LoopCheckpoint : MonoBehaviour
             pair.anomalyAtEntry = Anomaly.Instance.AnomalyHappening;
             return;
         }
+        
+        if (LevelService.Instance.Level == 0)
+        {
+            LevelService.Instance.AddLevel();
+            pair.pendingEntry = null;
+            return;
+        }
 
         bool sameCheckpointAsEntry = pair.pendingEntry == this; // Did the player exit through the same checkpoint they entered? this is the "turn around" case.
         bool anomaly = pair.anomalyAtEntry;
         bool correct = sameCheckpointAsEntry ? anomaly : !anomaly;
+        
 
         if (correct)
         {
