@@ -28,12 +28,16 @@ public class LoopCheckpoint : MonoBehaviour
         {
             pair.pendingEntry = this;
             pair.anomalyAtEntry = Anomaly.Instance.AnomalyHappening;
+            //Variable that tells anomaly that the triggers were passed through and that the anomaly should be reset.
+            pair.hasTriggeredCheckpoints = true;
             return;
         }
         
         if (LevelService.Instance.Level == 0)
         {
             LevelService.Instance.AddLevel();
+            pair.checkpointA.gameObject.GetComponent<Collider>().enabled = false; 
+            pair.checkpointB.gameObject.GetComponent<Collider>().enabled = false;
             pair.pendingEntry = null;
             return;
         }
@@ -54,6 +58,8 @@ public class LoopCheckpoint : MonoBehaviour
         else
         {
             LevelService.Instance.DeductLevels();
+            pair.checkpointA.gameObject.GetComponent<Collider>().enabled = false; 
+            pair.checkpointB.gameObject.GetComponent<Collider>().enabled = false;
         }
 
         // Reset so the pair is ready for the next crossing.

@@ -23,10 +23,7 @@ public class ScenePoppulator : MonoBehaviour
 
     private void OnEnable()
     {
-        if (Anomaly.Instance != null)
-        {
             Anomaly.EnsurePersistentInstance().AnomalyDetermined += HandleAnomalyDetermined;
-        }
     }
 
     private void OnDisable()
@@ -117,7 +114,7 @@ public class ScenePoppulator : MonoBehaviour
         // Keep track of THIS cycle separately.
         HashSet<int> currentAnomalyIndices = new();
         
-        foreach (int anomalyType in Anomaly.Instance.AnomalyTypePerCount)
+        foreach (int anomalyType in Anomaly.Instance.AnomalyTypePerAnomaly)
         {
          
             if (_availableIndices.Count == 0)
@@ -152,6 +149,13 @@ public class ScenePoppulator : MonoBehaviour
                     // Anomaly Type 2: Deactivate object.
                     DeactivateObject(objectIndex);
 
+                    break;
+                }
+
+                case 2:
+                {
+                    // Change the material of the object.
+                    ChangeObjectMaterial(objectIndex);
                     break;
                 }
 
@@ -231,6 +235,16 @@ public class ScenePoppulator : MonoBehaviour
                 $"Anomaly Type 2: Deactivated object at index " +
                 $"{objectIndex}. Object: {objectToDeactivate.name}"
             );
+        }
+    }
+
+    private void ChangeObjectMaterial(int objectIndex)
+    {
+        GameObject objectToChange = _currentObjectsInScene[objectIndex];
+
+        if (objectToChange != null)
+        {
+            
         }
     }
 

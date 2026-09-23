@@ -8,13 +8,13 @@ public class Anomaly : MonoBehaviour
     public static Anomaly Instance { get; private set; }
 
     private bool _anomalyHappening = false;
-    private int _anomalyCount = 0;
-    private int[] _anomalyTypePerCount = Array.Empty<int>();
+    private int _anomalyAmount = 0;
+    private int[] _anomalyTypePerAnomaly = Array.Empty<int>();
 
 
     public bool AnomalyHappening => _anomalyHappening;
-    public int AnomalyCount => _anomalyCount;
-    public int[] AnomalyTypePerCount => _anomalyTypePerCount;
+    public int AnomalyAmount => _anomalyAmount;
+    public int[] AnomalyTypePerAnomaly => _anomalyTypePerAnomaly;
 
     public event Action AnomalyDetermined;
 
@@ -64,7 +64,7 @@ public class Anomaly : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void CheckAnomaly(string other)
+    public void NewLevelAnomalyGenerator(string other)
     {
         if (other != "Player")
             return;
@@ -88,14 +88,14 @@ public class Anomaly : MonoBehaviour
 
     public void DetermineAnomaly()
     {
-        const int anomalyTypeCount = 4; // 0-3, adjust once the actual anomaly types are defined
-        _anomalyCount = AnomalyDifficultyService.Instance.GetAnomalyCount();
-        _anomalyTypePerCount = new int[_anomalyCount];
-        for (int i = 0; i < _anomalyTypePerCount.Length; i++)
+        const int anomalyTypeCount = 3; // 0-3, adjust once the actual anomaly types are defined
+        _anomalyAmount = AnomalyDifficultyService.Instance.GetAnomalyCount();
+        _anomalyTypePerAnomaly = new int[_anomalyAmount];
+        for (int i = 0; i < _anomalyTypePerAnomaly.Length; i++)
         {
-            _anomalyTypePerCount[i] = AnomalyDifficultyService.Instance.GetAnomalyType(anomalyTypeCount);
+            _anomalyTypePerAnomaly[i] = AnomalyDifficultyService.Instance.GetAnomalyType(anomalyTypeCount);
         }
-        Debug.Log("Anomaly type per count: " + string.Join(", ", _anomalyTypePerCount));
+        Debug.Log("Anomaly type per count: " + string.Join(", ", _anomalyTypePerAnomaly));
         //_anomalyDeterminded = true;
     }
 
@@ -106,8 +106,8 @@ public class Anomaly : MonoBehaviour
 
     private void ResetAnomaly()
     {
-        _anomalyCount = 0;
-        _anomalyTypePerCount = Array.Empty<int>();
+        _anomalyAmount = 0;
+        _anomalyTypePerAnomaly = Array.Empty<int>();
     }
 
 }
