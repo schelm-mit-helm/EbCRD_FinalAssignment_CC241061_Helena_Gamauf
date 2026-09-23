@@ -1235,6 +1235,7 @@ MonoBehaviour:
   pendingEntry: {fileID: 0}
   anomalyAtEntry: 0
   hasScoredThisCycle: 0
+  hasTriggeredCheckpoints: 0
 --- !u!4 &389659275
 Transform:
   m_ObjectHideFlags: 0
@@ -4533,6 +4534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PortalManager
   spawnPoint: {fileID: 1989791646}
+  pair: {fileID: 389659274}
 --- !u!65 &1346406618
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6486,6 +6488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PortalManager
   spawnPoint: {fileID: 1750957423}
+  pair: {fileID: 389659274}
 --- !u!1 &1834195262
 GameObject:
   m_ObjectHideFlags: 0
